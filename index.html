@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>☕ Mon Café - Menu</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #faf6f0;
+        margin: 50px;
+        color: #332211;
+      }
+      .carte {
+        max-width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .produit {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 5px;
+      }
+      .prix {
+        font-weight: bold;
+        color: #a05a2c;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Bienvenue au Café</h1>
+    <div class="carte" id="conteneurMenu">Chargement de la carte...</div>
+
+    <script>
+      // Le script appelle le serveur Node.js sur le port 5000
+      fetch("http://localhost:5000/api/menu")
+        .then((res) => res.json())
+        .then((data) => {
+          const conteneur = document.getElementById("conteneurMenu");
+          if (data.erreur) {
+            conteneur.innerHTML = `<p style="color:red;">${data.erreur}</p>`;
+            return;
+          }
+
+          conteneur.innerHTML = ""; // On vide le chargement
+          data.forEach((prod) => {
+            conteneur.innerHTML += `
+                        <div class="produit">
+                            <div>
+                                <strong>${prod.nom}</strong><br>
+                                <small style="color:gray;">${prod.categorie}</small>
+                            </div>
+                            <span class="prix">${Number(prod.prix).toFixed(2)} €</span>
+                        </div>
+                    `;
+          });
+        })
+        .catch((err) => {
+          document.getElementById("conteneurMenu").innerHTML =
+            "<p style='color:red;'>Le serveur index.js n'est pas lancé.</p>";
+        });
+    </script>
+  </body>
+</html>
