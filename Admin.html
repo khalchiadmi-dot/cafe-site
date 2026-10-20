@@ -9,10 +9,10 @@
         .container { max-width: 700px; margin: 0 auto; }
         .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
         h1, h2 { color: #4a3319; }
-        .msg-box { background: #faf6f0; padding: 15px; border-left: 4px solid #a05a2c; border-radius: 4px; margin-bottom: 15px; }
+        .msg-box { background: #faf6f0; padding: 15px; border-left: 4px solid #a05a2c; border-radius: 4px; margin-bottom: 15px; position: relative; }
         .btn-del { background: #cc3333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; float: right; }
-        .form-inline { display: flex; gap: 10px; margin-top: 15px; }
-        input, select, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
+        .form-inline { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        input, select, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 1em; }
         button { background: #4a3319; color: white; cursor: pointer; font-weight: bold; border: none; }
         button:hover { background: #a05a2c; }
     </style>
@@ -26,16 +26,16 @@
         <div class="card">
             <h2>➕ Ajouter une boisson ou pâtisserie</h2>
             <form id="addForm" class="form-inline">
-                <input type="text" id="addNom" placeholder="Nom (Ex: Latte Macchiato)" required style="flex: 2;">
-                <select id="addCat" required style="flex: 1;">
+                <input type="text" id="addNom" placeholder="Nom (Ex: Latte Macchiato)" required style="flex: 2; min-width: 200px;">
+                <select id="addCat" required style="flex: 1; min-width: 150px;">
                     <option value="Boisson Chaude">Boisson Chaude</option>
                     <option value="Boisson Froide">Boisson Froide</option>
                     <option value="Pâtisserie">Pâtisserie</option>
                 </select>
-                <input type="number" id="addPrix" step="0.01" placeholder="Prix en €" required style="flex: 1;">
-                <button type="submit">Ajouter</button>
+                <input type="number" id="addPrix" step="0.01" placeholder="Prix en €" required style="flex: 1; min-width: 100px;">
+                <button type="submit" style="flex: 1; min-width: 100px;">Ajouter</button>
             </form>
-            <p id="addStatus" style="font-weight:bold;"></p>
+            <p id="addStatus" style="font-weight:bold; margin-top: 15px;"></p>
         </div>
 
         <!-- Section 2 : Les Messages reçus -->
@@ -46,29 +46,43 @@
     </div>
 
     <script>
+        // Clés réseau de connexion en ligne vers votre instance
         const SUPABASE_URL = "https://supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
 
         // 1. CHARGER ET AFFICHER LES MESSAGES
         function chargerMessages() {
+            const div = document.getElementById('listeMessages');
             fetch(`${SUPABASE_URL}/rest/v1/messages_cafe?select=*&order=date_envoi.desc`, {
-                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                headers: { 
+                    "apikey": SUPABASE_ANON_KEY, 
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}` 
+                }
             })
-            .then(res => res.json())
+            .then(res => {
+                if(!res.ok) throw new Error("Erreur serveur");
+                return res.json();
+            })
             .then(data => {
-                const div = document.getElementById('listeMessages');
-                if(data.length === 0) { div.innerHTML = "<p>Aucun message reçu pour le moment.</p>"; return; }
+                if(!Array.isArray(data) || data.length === 0) { 
+                    div.innerHTML = "<p>Aucun message reçu pour le moment.</p>"; 
+                    return; 
+                }
                 div.innerHTML = "";
                 data.forEach(msg => {
                     const date = new Date(msg.date_envoi).toLocaleString('fr-FR');
                     div.innerHTML += `
                         <div class="msg-box">
-                            <span class="btn-del" onclick="supprimerMessage(${msg.id})">Supprimer</span>
+                            <button class="btn-del" onclick="supprimerMessage(${msg.id})">Supprimer</button>
                             <strong>👤 ${msg.nom}</strong> (${msg.email}) - <small>📅 ${date}</small>
                             <p style="margin: 8px 0 0 0; color:#554433;">💬 ${msg.message}</p>
                         </div>
                     `;
                 });
+            })
+            .catch((err) => {
+                console.error(err);
+                div.innerHTML = "<p style='color:red;'>⚠️ Erreur de liaison réseau avec Supabase.</p>";
             });
         }
 
@@ -77,7 +91,10 @@
             if(!confirm("Supprimer ce message ?")) return;
             fetch(`${SUPABASE_URL}/rest/v1/messages_cafe?id=eq.${id}`, {
                 method: 'DELETE',
-                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                headers: { 
+                    "apikey": SUPABASE_ANON_KEY, 
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}` 
+                }
             }).then(() => chargerMessages());
         }
 
@@ -85,13 +102,16 @@
         document.getElementById('addForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const status = document.getElementById('addStatus');
-            status.style.color = "orange"; status.innerText = "Ajout...";
+            status.style.color = "orange"; 
+            status.innerText = "Ajout en cours dans le Cloud...";
 
             fetch(`${SUPABASE_URL}/rest/v1/menu_cafe`, {
                 method: 'POST',
                 headers: { 
-                    "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                    "Content-Type": "application/json", "Prefer": "return=minimal"
+                    "apikey": SUPABASE_ANON_KEY, 
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json", 
+                    "Prefer": "return=minimal"
                 },
                 body: JSON.stringify({
                     nom: document.getElementById('addNom').value,
@@ -100,15 +120,21 @@
                 })
             })
             .then(res => {
-                if(!res.ok) throw new Error();
-                status.style.color = "green"; status.innerText = "✅ Produit ajouté ! Allez voir sur votre téléphone !";
+                if(!res.ok) throw new Error("Erreur insertion");
+                status.style.color = "green"; 
+                status.innerText = "✅ Produit ajouté avec succès ! Allez voir sur votre carte !";
                 document.getElementById('addForm').reset();
             })
-            .catch(() => { status.style.color = "red"; status.innerText = "❌ Échec de l'ajout."; });
+            .catch((err) => { 
+                console.error(err);
+                status.style.color = "red"; 
+                status.innerText = "❌ Échec de l'ajout. Vérifiez la structure réseau."; 
+            });
         });
 
-        // Lancement automatique au démarrage
+        // Démarrage automatique des écoutes
         chargerMessages();
     </script>
 </body>
 </html>
+
