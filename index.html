@@ -2,48 +2,133 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Café - Menu Cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☕ Le Café Chaleureux - Menu & Contact</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #faf6f0; margin: 50px; color: #332211; }
-        .carte { max-width: 400px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0 auto; }
-        h1 { text-align: center; color: #4a3319; font-size: 1.8em; margin-bottom: 25px; }
-        .produit { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #d1c7bd; padding-bottom: 8px; }
-        .prix { font-weight: bold; color: #a05a2c; }
+        :root {
+            --primary: #4a3319;
+            --secondary: #a05a2c;
+            --accent: #d1c7bd;
+            --bg: #faf6f0;
+            --text: #332211;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 20px;
+            color: var(--text); 
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .section { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(74, 51, 25, 0.05); 
+            margin-bottom: 30px;
+        }
+        h1, h2 { 
+            text-align: center; 
+            color: var(--primary); 
+            margin-top: 0;
+        }
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.5em; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        
+        /* Style du Menu */
+        .produit { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+            border-bottom: 1px dashed var(--accent); 
+            padding-bottom: 10px; 
+        }
+        .produit strong { font-size: 1.1em; color: var(--primary); }
+        .prix { font-weight: bold; color: var(--secondary); font-size: 1.1em; }
         small { color: #8a7a6e; font-style: italic; }
+        
+        /* Style du Formulaire */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--primary); }
+        input, textarea { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid var(--accent); 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus { outline: 2px solid var(--secondary); }
+        button { 
+            width: 100%; 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            font-size: 1em; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background 0.2s;
+        }
+        button:hover { background-color: var(--secondary); }
+        #statusMessage { text-align: center; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="carte">
-        <h1>☕ Bienvenue au Café !</h1>
-        <div id="conteneurMenu">Connexion au Cloud Supabase...</div>
+    <div class="container">
+        <!-- Section Menu -->
+        <div class="section">
+            <h1>☕ Le Café Chaleureux</h1>
+            <h2>Notre Carte Cloud</h2>
+            <div id="conteneurMenu">Connexion au parfum du café...</div>
+        </div>
+
+        <!-- Section Formulaire -->
+        <div class="section">
+            <h2>Réservation & Contact</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="nom">Votre Nom</label>
+                    <input type="text" id="nom" required placeholder="Ex: Khalid">
+                </div>
+                <div class="form-group">
+                    <label for="email">Votre Adresse Email</label>
+                    <input type="email" id="email" required placeholder="Ex: khalid@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Votre Message / Réservation</label>
+                    <textarea id="message" rows="4" required placeholder="Ex: Je souhaite réserver une table pour 2 personnes ce soir à 19h."></textarea>
+                </div>
+                <button type="submit">Envoyer mon message</button>
+            </form>
+            <div id="statusMessage"></div>
+        </div>
     </div>
 
     <script>
-        // Clés de connexion officielles de votre projet
-        const SUPABASE_URL = "https://xghigwxcsunjnzhdofzs.supabase.co";
+        const SUPABASE_URL = "https://supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
 
-        // Lecture directe de la table du menu à travers l'API PostgREST de Supabase
+        // 1. CHARGEMENT DU MENU DU CAFÉ
         fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
             headers: {
                 "apikey": SUPABASE_ANON_KEY,
                 "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
             }
         })
-        .then(res => {
-            if (!res.ok) throw new Error("Erreur de réponse du serveur cloud");
-            return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
             const conteneur = document.getElementById('conteneurMenu');
-            
             if (!Array.isArray(data)) {
-                conteneur.innerHTML = `<p style="color:red; text-align:center;">Erreur format de données.</p>`;
+                conteneur.innerHTML = `<p style="color:red; text-align:center;">Erreur de chargement de la carte.</p>`;
                 return;
             }
-            
-            conteneur.innerHTML = ""; // On vide l'indicateur de chargement
+            conteneur.innerHTML = ""; 
             data.forEach(prod => {
                 conteneur.innerHTML += `
                     <div class="produit">
@@ -56,17 +141,47 @@
                 `;
             });
         })
-        .catch(err => {
-            console.error(err);
-            document.getElementById('conteneurMenu').innerHTML = "<p style='color:red; text-align:center;'>Erreur réseau ou restriction RLS active.</p>";
+        .catch(() => {
+            document.getElementById('conteneurMenu').innerHTML = "<p style='color:red; text-align:center;'>Erreur de connexion.</p>";
+        });
+
+        // 2. ENVOI DU FORMULAIRE DANS LE CLOUD SUPABASE
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêche la page de se recharger
+            
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.style.color = "orange";
+            statusDiv.innerText = "Envoi en cours...";
+
+            const nom = document.getElementById('nom').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            fetch(`${SUPABASE_URL}/rest/v1/messages_cafe`, {
+                method: 'POST',
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                },
+                body: JSON.stringify({ nom: nom, email: email, message: message })
+            })
+            .then(res => {
+                if (res.ok) {
+                    statusDiv.style.color = "green";
+                    statusDiv.innerText = "✅ Message envoyé avec succès au Café !";
+                    document.getElementById('contactForm').reset(); // Vide le formulaire
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(() => {
+                statusDiv.style.color = "red";
+                statusDiv.innerText = "❌ Échec de l'envoi. Veuillez réessayer.";
+            });
         });
     </script>
 </body>
 </html>
 
-      
-
-   
-      
-                            
-   >
