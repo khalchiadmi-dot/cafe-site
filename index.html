@@ -2,10 +2,10 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>☕ Mon Café - Menu</title>
+    <title>Mon Café - Menu Cloud</title>
     <style>
       body {
-        font-family: sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: #faf6f0;
         margin: 50px;
         color: #332211;
@@ -13,54 +13,78 @@
       .carte {
         max-width: 400px;
         background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        color: #4a3319;
+        font-size: 1.8em;
+        margin-bottom: 25px;
       }
       .produit {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 12px;
-        border-bottom: 1px dashed #ccc;
-        padding-bottom: 5px;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #d1c7bd;
+        padding-bottom: 8px;
       }
       .prix {
         font-weight: bold;
         color: #a05a2c;
       }
+      small {
+        color: #8a7a6e;
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
-    <h1>Bienvenue au Café</h1>
-    <div class="carte" id="conteneurMenu">Chargement de la carte...</div>
+    <div class="carte">
+      <h1>☕ Bienvenue au Café</h1>
+      <div id="conteneurMenu">Connexion au Cloud Supabase...</div>
+    </div>
 
     <script>
-      // Le script appelle le serveur Node.js sur le port 5000
-      fetch("http://localhost:5000/api/menu")
+      // Configuration automatique vers votre Cloud Supabase
+      const SUPABASE_URL = "https://supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
+
+      // Lecture directe de la table du menu
+      fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           const conteneur = document.getElementById("conteneurMenu");
-          if (data.erreur) {
-            conteneur.innerHTML = `<p style="color:red;">${data.erreur}</p>`;
+
+          if (!Array.isArray(data)) {
+            conteneur.innerHTML = `<p style="color:red; text-align:center;">Erreur de chargement des données cloud.</p>`;
             return;
           }
 
-          conteneur.innerHTML = ""; // On vide le chargement
+          conteneur.innerHTML = ""; // On vide l'indicateur de chargement
           data.forEach((prod) => {
             conteneur.innerHTML += `
-                        <div class="produit">
-                            <div>
-                                <strong>${prod.nom}</strong><br>
-                                <small style="color:gray;">${prod.categorie}</small>
-                            </div>
-                            <span class="prix">${Number(prod.prix).toFixed(2)} €</span>
+                    <div class="produit">
+                        <div>
+                            <strong>${prod.nom}</strong><br>
+                            <small>${prod.categorie}</small>
                         </div>
-                    `;
+                        <span class="prix">${Number(prod.prix).toFixed(2)} €</span>
+                    </div>
+                `;
           });
         })
         .catch((err) => {
           document.getElementById("conteneurMenu").innerHTML =
-            "<p style='color:red;'>Le serveur index.js n'est pas lancé.</p>";
+            "<p style='color:red; text-align:center;'>Erreur réseau.</p>";
         });
     </script>
   </body>
