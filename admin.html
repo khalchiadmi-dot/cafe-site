@@ -35,7 +35,7 @@
                 <input type="number" id="addPrix" step="0.01" placeholder="Prix en €" required style="flex: 1; min-width: 100px;">
                 <button type="submit" style="flex: 1; min-width: 100px;">Ajouter</button>
             </form>
-            <p id="addStatus" style="font-weight:bold; margin-top: 15px;"></p>
+            <p id="addStatus" style="font-weight:bold; margin-top: 15px; color: green;"></p>
         </div>
 
         <!-- Section 2 : Les Messages reçus -->
@@ -46,8 +46,8 @@
     </div>
 
     <script>
-        // Clés réseau de connexion en ligne vers votre instance
-        const SUPABASE_URL = "https://supabase.co";
+        // Clés réseau de connexion en ligne vers votre instance unique
+        const SUPABASE_URL = "https://xghigwxcsunjnzhdofzs.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
 
         // 1. CHARGER ET AFFICHER LES MESSAGES
@@ -70,12 +70,12 @@
                 }
                 div.innerHTML = "";
                 data.forEach(msg => {
-                    const date = new Date(msg.date_envoi).toLocaleString('fr-FR');
+                    const date = msg.date_envoi ? new Date(msg.date_envoi).toLocaleString('fr-FR') : "Date inconnue";
                     div.innerHTML += `
                         <div class="msg-box">
                             <button class="btn-del" onclick="supprimerMessage(${msg.id})">Supprimer</button>
-                            <strong>👤 ${msg.nom}</strong> (${msg.email}) - <small>📅 ${date}</small>
-                            <p style="margin: 8px 0 0 0; color:#554433;">💬 ${msg.message}</p>
+                            <strong>👤 ${msg.nom || "Client"}</strong> (${msg.email || "Pas d'email"}) - <small>📅 ${date}</small>
+                            <p style="margin: 8px 0 0 0; color:#554433;">💬 ${msg.message || ""}</p>
                         </div>
                     `;
                 });
@@ -95,41 +95,53 @@
                     "apikey": SUPABASE_ANON_KEY, 
                     "Authorization": `Bearer ${SUPABASE_ANON_KEY}` 
                 }
-            }).then(() => chargerMessages());
-        }
-
-        // 3. AJOUTER UN PRODUIT AU MENU
-        document.getElementById('addForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const status = document.getElementById('addStatus');
-            status.style.color = "orange"; 
-            status.innerText = "Ajout en cours dans le Cloud...";
-
-            fetch(`${SUPABASE_URL}/rest/v1/menu_cafe`, {
-                method: 'POST',
-                headers: { 
-                    "apikey": SUPABASE_ANON_KEY, 
-                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                    "Content-Type": "application/json", 
-                    "Prefer": "return=minimal"
-                },
-                body: JSON.stringify({
-                    nom: document.getElementById('addNom').value,
-                    categorie: document.getElementById('addCat').value,
-                    prix: parseFloat(document.getElementById('addPrix').value)
-                })
             })
             .then(res => {
-                if(!res.ok) throw new Error("Erreur insertion");
-                status.style.color = "green"; 
-                status.innerText = "✅ Produit ajouté avec succès ! Allez voir sur votre carte !";
-                document.getElementById('addForm').reset();
+                if(res.ok) {
+                    chargerMessages();
+                } else {
+                    alert("Impossible de supprimer le message.");
+                }
             })
-            .catch((err) => { 
-                console.error(err);
-                status.style.color = "red"; 
-                status.innerText = "❌ Échec de l'ajout. Vérifiez la structure réseau."; 
-            });
+            .catch(err => console.error(err));
+        };
+
+        // 3. ENVOI DU PRODUIT DIRECTEMENT À SUPABASE
+        document.getElementById("addForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const statusText = document.getElementById("addStatus");
+
+            const name = document.getElementById("addNom").value;
+            const category = document.getElementById("addCat").value;
+            const price = parseFloat(document.getElementById("addPrix").value).toFixed(2);
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/menu_cafe`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_ANON_KEY,
+                        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                        "Prefer": "return=representation"
+                    },
+                    body: JSON.stringify({
+                        nom: name,
+                        categorie: category,
+                        prix: price,
+                        disponible: true
+                    }),
+                });
+
+                if (response.ok) {
+                    alert("Article enregistré avec succès sur le Web dans Supabase ! 🚀");
+                    document.getElementById("addForm").reset();
+                } else {
+                    alert("Erreur lors de l'enregistrement de l'article.");
+                }
+            } catch (error) {
+                console.error("Erreur réseau :", error);
+                alert("Erreur de liaison avec la base de données cloud.");
+            }
         });
 
         // Démarrage automatique des écoutes
@@ -137,4 +149,5 @@
     </script>
 </body>
 </html>
+
 
