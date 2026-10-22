@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// CONFIGURATION FORCEE SUPABASE (Évite les conflits de variables Render)
+// Chaîne de connexion Supabase nettoyée
 const SUPABASE_CONNECTION_STRING = "postgresql://postgres:CafeChiadmi2026@db.xghigwxcsunjnzhdofzs.supabase.co:5432/postgres";
 
 const pool = new Pool({
@@ -50,10 +50,9 @@ pool.connect(async (err, client, release) => {
           disponible BOOLEAN DEFAULT TRUE
       );
     `);
-  } catch (errTable) {}
+  } catch (e) {}
   release();
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Serveur actif sur le port ${PORT}`);
   });
 });
-
