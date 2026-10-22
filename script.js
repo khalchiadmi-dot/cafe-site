@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://supabase.co";
+const SUPABASE_URL = "https://xghigwxcsunjnzhdofzs.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
 
 const IMAGES = {
@@ -27,6 +27,7 @@ function findImg(nom, cat) {
 
 async function loadMenu() {
   try {
+    // CORRECTION ICI : Utilisation de la bonne variable d'URL Supabase
     const res = await fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
       method: "GET",
       headers: {
@@ -70,7 +71,6 @@ async function loadMenu() {
   }
 }
 
-// GESTION DU FORMULAIRE DE CONTACT
 document.getElementById("contact-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
@@ -94,5 +94,4 @@ document.getElementById("contact-form").addEventListener("submit", async (e) => 
   }
 });
 
-// INITIALISATION AU CHARGEMENT DE LA PAGE
 window.onload = loadMenu;
