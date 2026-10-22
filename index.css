@@ -1,0 +1,204 @@
+:root { 
+    --primary: #4a2c11; 
+    --secondary: #d4a373; 
+    --accent: #fefae0; 
+    --dark: #281505; 
+    --light: #faf7f2; 
+    --text: #4e4e4e; 
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: "Segoe UI", sans-serif; 
+}
+
+body { 
+    background-color: var(--light); 
+    color: var(--text); 
+    line-height: 1.4; 
+}
+
+header { 
+    background-color: var(--primary); 
+    padding: 1rem 2rem; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+}
+
+nav { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+.logo { 
+    color: var(--accent); 
+    font-size: 1.6rem; 
+    font-weight: bold; 
+    text-decoration: none; 
+}
+
+.nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 2rem; 
+    align-items: center; 
+}
+
+.nav-links a { 
+    color: var(--light); 
+    text-decoration: none; 
+    font-weight: 500; 
+}
+
+.btn-admin-nav { 
+    border: 1px solid var(--secondary); 
+    padding: 0.4rem 0.8rem; 
+    border-radius: 4px; 
+    color: var(--secondary) !important; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+.hero { 
+    background: linear-gradient(rgba(40,21,5,0.6), rgba(40,21,5,0.6)), url("https://unsplash.com") no-repeat center center/cover; 
+    height: 35vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    text-align: center; 
+}
+
+.hero h1 { 
+    font-size: 2.5rem; 
+    color: var(--accent); 
+    margin-bottom: 0.5rem; 
+}
+
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 2rem 1rem; 
+}
+
+.menu-category { 
+    font-size: 1.4rem; 
+    color: var(--primary); 
+    margin: 2rem 0 1rem 0; 
+    border-left: 5px solid var(--secondary); 
+    padding-left: 12px; 
+    font-weight: bold; 
+}
+
+/* LA GRILLE EN PETITES CASES ALIGNÉES */
+.menu-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 1.2rem; 
+    margin-bottom: 2.5rem; 
+}
+
+.menu-item { 
+    background: white; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06); 
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eaddd0;
+}
+
+.menu-image { 
+    height: 130px; 
+    background-size: cover; 
+    background-position: center; 
+}
+
+.menu-info { 
+    padding: 0.8rem; 
+    text-align: center; 
+}
+
+.menu-info h3 { 
+    color: var(--dark); 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.4rem;
+    font-size: 1rem; 
+}
+
+.price { 
+    background-color: #f7e6d5; 
+    color: var(--primary); 
+    padding: 0.1rem 0.4rem; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    font-size: 0.95rem;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+#contact h2 {
+    margin-bottom: 1.5rem; 
+    text-align: center; 
+    font-size: 1.4rem;
+}
+
+#contact-form {
+    max-width: 500px; 
+    margin: 0 auto; 
+    background: white; 
+    padding: 1.5rem; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-group { 
+    margin-bottom: 1rem; 
+}
+
+.form-group label { 
+    display: block; 
+    font-weight: bold; 
+    margin-bottom: 0.3rem; 
+}
+
+.form-group input, .form-group textarea { 
+    width: 100%; 
+    padding: 0.6rem; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+}
+
+.btn-submit { 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    padding: 0.8rem; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    width: 100%; 
+    font-size: 1rem; 
+}
+
+.loading-text {
+    color: #888;
+    font-style: italic;
+}
+
+footer { 
+    background-color: var(--dark); 
+    color: var(--light); 
+    text-align: center; 
+    padding: 1.5rem; 
+    margin-top: 3rem; 
+    font-size: 0.85rem; 
+}
