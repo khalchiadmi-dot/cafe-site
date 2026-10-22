@@ -4,32 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Café Chiadmi | Bruxelles</title>
-    <style>
-        :root { --primary: #4a2c11; --secondary: #d4a373; --accent: #fefae0; --dark: #281505; --light: #faf7f2; --text: #4e4e4e; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
-        body { background-color: var(--light); color: var(--text); line-height: 1.6; }
-        header { background-color: var(--primary); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; }
-        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-        .logo { color: var(--accent); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
-        .nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { color: var(--light); text-decoration: none; font-weight: 500; }
-        .btn-admin-nav { border: 1px solid var(--secondary); padding: 0.4rem 0.8rem; border-radius: 4px; color: var(--secondary) !important; text-decoration: none; font-weight: bold; }
-        .hero { background: linear-gradient(rgba(40,21,5,0.6), rgba(40,21,5,0.6)), url("https://unsplash.com") no-repeat center center/cover; height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
-        .hero h1 { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
-        .menu-category { font-size: 1.6rem; color: var(--primary); margin: 2rem 0 1rem 0; border-left: 5px solid var(--secondary); padding-left: 15px; font-weight: bold; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem; }
-        .menu-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .menu-image { height: 200px; background-size: cover; background-position: center; }
-        .menu-info { padding: 1.2rem; }
-        .menu-info h3 { color: var(--dark); display: flex; justify-content: space-between; font-size: 1.2rem; }
-        .price { background-color: #f7e6d5; color: var(--primary); padding: 0.1rem 0.5rem; border-radius: 4px; font-weight: bold; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 0.3rem; }
-        .form-group input, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; }
-        footer { background-color: var(--dark); color: var(--light); text-align: center; padding: 2rem; margin-top: 4rem; }
-    </style>
+    <!-- LIAISON AVEC VOTRE NOUVEAU FICHIER CSS -->
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <header>
@@ -51,118 +27,29 @@
     <main class="container" id="menu">
       <div class="menu-category">☕ Nos Boissons</div>
       <div class="menu-grid" id="grid-cafes">
-         <p style="color:#888; font-style:italic;">Chargement de la carte...</p>
+         <p class="loading-text">Chargement de la carte...</p>
       </div>
-      <div class="menu-category">🧇 Gourmandises & Pâtisseries</div>
+      <div class="menu-category">Gourmandises & Pâtisseries</div>
       <div class="menu-grid" id="grid-patisseries">
-         <p style="color:#888; font-style:italic;">Chargement des douceurs...</p>
+         <p class="loading-text">Chargement des douceurs...</p>
       </div>
     </main>
 
     <section class="container" id="contact">
-      <h2 style="margin-bottom:2rem; text-align:center;">📬 Laisser un message</h2>
-      <form id="contact-form" style="max-width:600px; margin:0 auto; background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
-        <div class="form-group"><label>Nom</label><input type="text" id="name" required /></div>
-        <div class="form-group"><label>Email</label><input type="email" id="email" required /></div>
-        <div class="form-group"><label>Message</label><textarea id="message" rows="4" required></textarea></div>
+      <h2>📬 Laisser un message</h2>
+      <form id="contact-form">
+        <div class="form-group"><label for="name">Nom</label><input type="text" id="name" required /></div>
+        <div class="form-group"><label for="email">Email</label><input type="email" id="email" required /></div>
+        <div class="form-group"><label for="message">Message</label><textarea id="message" rows="4" required></textarea></div>
         <button type="submit" class="btn-submit">Envoyer</button>
       </form>
     </section>
 
     <footer><p>&copy; 2026 Café Chiadmi — Bruxelles</p></footer>
 
-    <script>
-        // CORRECTION DE L'URL UNIQUE DE VOTRE PROJET
-      const SUPABASE_URL = "https://xghigwxcsunjnzhdofzs.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
-
-      const IMAGES = {
-        espresso: "https://unsplash.com",
-        cappuccino: "https://unsplash.com",
-        latte: "https://unsplash.com",
-        chocolat: "https://unsplash.com",
-        froid: "https://unsplash.com",
-        gaufre: "https://unsplash.com",
-        gateau: "https://unsplash.com",
-        def_cafe: "https://unsplash.com",
-        def_food: "https://unsplash.com"
-      };
-
-      function findImg(nom, cat) {
-        const n = nom.toLowerCase();
-        if (n.includes("espresso") || n.includes("serré")) return IMAGES.espresso;
-        if (n.includes("cappuccino")) return IMAGES.cappuccino;
-        if (n.includes("latte") || n.includes("macchiato")) return IMAGES.latte;
-        if (n.includes("chocolat")) return IMAGES.chocolat;
-        if (n.includes("glacé") || n.includes("froid") || n.includes("jus") || n.includes("thé")) return IMAGES.froid;
-        if (n.includes("gaufre") || n.includes("waffle") || n.includes("mhersa") || n.includes("harcha")) return IMAGES.gaufre;
-        if (n.includes("gâteau") || n.includes("cake") || n.includes("tarte")) return IMAGES.gateau;
-        return (cat.includes("Chaude") || cat.includes("Froide") || cat.includes("cafes") || cat.includes("Boisson")) ? IMAGES.def_cafe : IMAGES.def_food;
-      }
-
-      async function loadMenu() {
-        try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
-            method: "GET",
-            headers: {
-              "apikey": SUPABASE_ANON_KEY,
-              "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-              "Content-Type": "application/json"
-            }
-          });
-          const data = await res.json();
-          const gridCafes = document.getElementById("grid-cafes");
-          const gridPatisseries = document.getElementById("grid-patisseries");
-          
-          gridCafes.innerHTML = ""; gridPatisseries.innerHTML = "";
-
-          if (!data || data.length === 0) {
-            gridCafes.innerHTML = "<p>Aucune boisson disponible.</p>";
-            gridPatisseries.innerHTML = "<p>Aucune pâtisserie disponible.</p>";
-            return;
-          }
-
-          data.forEach(p => {
-            const img = findImg(p.nom, p.categorie);
-            const html = `
-              <div class="menu-item">
-                <div class="menu-image" style="background-image:url('${img}')"></div>
-                <div class="menu-info">
-                  <h3><span>${p.nom}</span><span class="price">${p.prix} €</span></h3>
-                </div>
-              </div>`;
-            
-            const cat = p.categorie ? p.categorie.toLowerCase() : "";
-            if (cat.includes("chaude") || cat.includes("froide") || cat.includes("cafe") || cat.includes("boisson")) { 
-                gridCafes.insertAdjacentHTML('beforeend', html); 
-            } else { 
-                gridPatisseries.insertAdjacentHTML('beforeend', html); 
-            }
-          });
-        } catch (e) { 
-            console.error(e);
-            document.getElementById("grid-cafes").innerHTML = "<p style='color:red;'>⚠️ Erreur de chargement.</p>";
-        }
-      }
-
-      document.getElementById("contact-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        try {
-          await fetch(`${SUPABASE_URL}/rest/v1/messages_cafe`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
-            body: JSON.stringify({ nom: document.getElementById("name").value, email: document.getElementById("email").value, message: document.getElementById("message").value })
-          });
-          alert("Message envoyé avec succès ! 📬");
-          document.getElementById("contact-form").reset();
-        } catch (err) { alert("Erreur réseau"); }
-      });
-
-      window.onload = loadMenu;
-    </script>
+    <!-- LIAISON AVEC VOTRE NOUVEAU FICHIER JAVASCRIPT -->
+    <script src="index.js"></script>
 </body>
 </html>
-
-
 
 
