@@ -1,154 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>☕ Le Café Chaleureux - Menu Cloud</title>
+    <title>Café Chiadmi | Bruxelles</title>
     <style>
-        :root {
-            --primary: #4a3319;
-            --secondary: #a05a2c;
-            --accent: #d1c7bd;
-            --bg: #faf6f0;
-            --text: #332211;
-        }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg); 
-            margin: 0; 
-            padding: 20px;
-            color: var(--text); 
-        }
-        .container { max-width: 500px; margin: 0 auto; }
-        .section { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 25px rgba(74, 51, 25, 0.05); 
-            margin-bottom: 30px;
-        }
-        h1, h2 { text-align: center; color: var(--primary); margin-top: 0; }
-        h1 { font-size: 2.2em; }
-        h2 { font-size: 1.5em; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
-        .produit { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 20px; 
-            border-bottom: 1px dashed var(--accent); 
-            padding-bottom: 10px; 
-        }
-        .produit strong { font-size: 1.1em; color: var(--primary); }
-        .prix { font-weight: bold; color: var(--secondary); font-size: 1.1em; }
-        small { color: #8a7a6e; font-style: italic; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--primary); }
-        input, textarea { 
-            width: 100%; padding: 10px; border: 1px solid var(--accent); border-radius: 8px; box-sizing: border-box; font-family: inherit;
-        }
-        button { 
-            width: 100%; background-color: var(--primary); color: white; border: none; padding: 12px; font-size: 1em; font-weight: bold; border-radius: 8px; cursor: pointer;
-        }
-        button:hover { background-color: var(--secondary); }
-        #statusMessage { text-align: center; margin-top: 15px; font-weight: bold; }
+        :root { --primary: #4a2c11; --secondary: #d4a373; --accent: #fefae0; --dark: #281505; --light: #faf7f2; --text: #4e4e4e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background-color: var(--light); color: var(--text); line-height: 1.6; }
+        header { background-color: var(--primary); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .logo { color: var(--accent); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--light); text-decoration: none; font-weight: 500; }
+        .btn-admin-nav { border: 1px solid var(--secondary); padding: 0.4rem 0.8rem; border-radius: 4px; color: var(--secondary) !important; text-decoration: none; font-weight: bold; }
+        .hero { background: linear-gradient(rgba(40,21,5,0.6), rgba(40,21,5,0.6)), url("https://unsplash.com") no-repeat center center/cover; height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .hero h1 { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+        .menu-category { font-size: 1.6rem; color: var(--primary); margin: 2rem 0 1rem 0; border-left: 5px solid var(--secondary); padding-left: 15px; font-weight: bold; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem; }
+        .menu-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .menu-image { height: 200px; background-size: cover; background-position: center; }
+        .menu-info { padding: 1.2rem; }
+        .menu-info h3 { color: var(--dark); display: flex; justify-content: space-between; font-size: 1.2rem; }
+        .price { background-color: #f7e6d5; color: var(--primary); padding: 0.1rem 0.5rem; border-radius: 4px; font-weight: bold; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 0.3rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; }
+        footer { background-color: var(--dark); color: var(--light); text-align: center; padding: 2rem; margin-top: 4rem; }
     </style>
 </head>
 <body>
+    <header>
+      <nav>
+        <a href="#" class="logo">☕ Café Chiadmi</a>
+        <ul class="nav-links">
+          <li><a href="#menu">La Carte</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="admin.html" class="btn-admin-nav">⚙️ Admin</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <div class="container">
-        <div class="section">
-            <h1>☕ Le Café Chaleureux</h1>
-            <h2>Notre Carte Cloud</h2>
-            <div id="conteneurMenu">Connexion au parfum du café...</div>
-        </div>
+    <section class="hero">
+      <h1>Café Chiadmi</h1>
+      <p>Votre espace de torréfaction artisanale au cœur de Bruxelles.</p>
+    </section>
 
-        <div class="section">
-            <h2>Réservation & Contact</h2>
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="nom">Votre Nom</label>
-                    <input type="text" id="nom" required placeholder="Ex: Khalid">
-                </div>
-                <div class="form-group">
-                    <label for="email">Votre Adresse Email</label>
-                    <input type="email" id="email" required placeholder="Ex: khalid@email.com">
-                </div>
-                <div class="form-group">
-                    <label for="message">Votre Message / Réservation</label>
-                    <textarea id="message" rows="4" required placeholder="Ex: Une table pour 2 personnes ce soir."></textarea>
-                </div>
-                <button type="submit">Envoyer mon message</button>
-            </form>
-            <div id="statusMessage"></div>
-        </div>
-    </div>
+    <main class="container" id="menu">
+      <div class="menu-category">☕ Nos Boissons</div>
+      <div class="menu-grid" id="grid-cafes"></div>
+      <div class="menu-category">🧇 Gourmandises & Pâtisseries</div>
+      <div class="menu-grid" id="grid-patisseries"></div>
+    </main>
+
+    <section class="container" id="contact">
+      <h2 style="margin-bottom:2rem; text-align:center;">📬 Laisser un message</h2>
+      <form id="contact-form" style="max-width:600px; margin:0 auto; background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+        <div class="form-group"><label>Nom</label><input type="text" id="name" required /></div>
+        <div class="form-group"><label>Email</label><input type="email" id="email" required /></div>
+        <div class="form-group"><label>Message</label><textarea id="message" rows="4" required></textarea></div>
+        <button type="submit" class="btn-submit">Envoyer</button>
+      </form>
+    </section>
+
+    <footer><p>&copy; 2026 Café Chiadmi — Bruxelles</p></footer>
 
     <script>
-        // Détection automatique des clés injectées dans Vercel ou Supabase
-        const SUPABASE_URL = "https://xghigwxcsunjnzhdofzs.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
+      const SUPABASE_URL = "https://supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGlnd3hjc3Vuam56aGRvZnpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0ODYyOTksImV4cCI6MjEwODA2MjI5OX0.o8BKi2YiPzPZVxZxLqRwPxAFh3SXkxMbb6f9Pck_5ss";
 
-        // Chargement automatique du menu
-        fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
-            headers: {
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            const conteneur = document.getElementById('conteneurMenu');
-            conteneur.innerHTML = ""; 
-            data.forEach(prod => {
-                conteneur.innerHTML += `
-                    <div class="produit">
-                        <div>
-                            <strong>${prod.nom}</strong><br>
-                            <small>${prod.categorie}</small>
-                        </div>
-                        <span class="prix">${Number(prod.prix).toFixed(2)} €</span>
-                    </div>
-                `;
-            });
-        })
-        .catch(() => {
-            document.getElementById('conteneurMenu').innerHTML = "<p style='color:red; text-align:center;'>Erreur de connexion aux boissons.</p>";
-        });
+      const IMAGES = {
+        espresso: "https://unsplash.com",
+        cappuccino: "https://unsplash.com",
+        latte: "https://unsplash.com",
+        chocolat: "https://unsplash.com",
+        froid: "https://unsplash.com",
+        gaufre: "https://unsplash.com",
+        gateau: "https://unsplash.com",
+        croissant: "https://unsplash.com",
+        def_cafe: "https://unsplash.com",
+        def_food: "https://unsplash.com"
+      };
 
-        // Envoi automatique du formulaire
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const statusDiv = document.getElementById('statusMessage');
-            statusDiv.style.color = "orange";
-            statusDiv.innerText = "Envoi en cours...";
+      function findImg(nom, cat) {
+        const n = nom.toLowerCase();
+        if (n.includes("espresso") || n.includes("serré")) return IMAGES.espresso;
+        if (n.includes("cappuccino")) return IMAGES.cappuccino;
+        if (n.includes("latte") || n.includes("macchiato")) return IMAGES.latte;
+        if (n.includes("chocolat")) return IMAGES.chocolat;
+        if (n.includes("glacé") || n.includes("froid") || n.includes("jus") || n.includes("thé")) return IMAGES.froid;
+        if (n.includes("gaufre") || n.includes("waffle")) return IMAGES.gaufre;
+        if (n.includes("gâteau") || n.includes("cake") || n.includes("tarte")) return IMAGES.gateau;
+        if (n.includes("croissant")) return IMAGES.croissant;
+        return (cat.includes("Chaude") || cat.includes("Froide") || cat.includes("cafes")) ? IMAGES.def_cafe : IMAGES.def_food;
+      }
 
-            fetch(`${SUPABASE_URL}/rest/v1/messages_cafe`, {
-                method: 'POST',
-                headers: {
-                    "apikey": SUPABASE_ANON_KEY,
-                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=minimal"
-                },
-                body: JSON.stringify({
-                    nom: document.getElementById('nom').value,
-                    email: document.getElementById('email').value,
-                    message: document.getElementById('message').value
-                })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error();
-                statusDiv.style.color = "green";
-                statusDiv.innerText = "✅ Message envoyé avec succès au Café !";
-                document.getElementById('contactForm').reset();
-            })
-            .catch(() => {
-                statusDiv.style.color = "red";
-                statusDiv.innerText = "❌ Échec de l'envoi. Vérifiez les règles RLS.";
-            });
-        });
+      async function loadMenu() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/menu_cafe?select=*`, {
+            headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+          });
+          const data = await res.json();
+          const gridCafes = document.getElementById("grid-cafes");
+          const gridPatisseries = document.getElementById("grid-patisseries");
+          gridCafes.innerHTML = ""; gridPatisseries.innerHTML = "";
+
+          data.forEach(p => {
+            const img = findImg(p.nom, p.categorie);
+            const html = `<div class="menu-item"><div class="menu-image" style="background-image:url('${img}')"></div><div class="menu-info"><h3><span>${p.nom}</span><span class="price">${p.prix} €</span></h3></div></div>`;
+            if (p.categorie.includes("Chaude") || p.categorie.includes("Froide") || p.categorie === "cafes") { gridCafes.insertAdjacentHTML('beforeend', html); }
+            else { gridPatisseries.insertAdjacentHTML('beforeend', html); }
+          });
+        } catch (e) { console.error(e); }
+      }
+
+      document.getElementById("contact-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          await fetch(`${SUPABASE_URL}/rest/v1/messages_cafe`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
+            body: JSON.stringify({ nom: document.getElementById("name").value, email: document.getElementById("email").value, message: document.getElementById("message").value })
+          });
+          alert("Message envoyé avec succès ! 📬");
+          document.getElementById("contact-form").reset();
+        } catch (err) { alert("Erreur réseau"); }
+      });
+
+      window.onload = loadMenu;
     </script>
 </body>
 </html>
+
 
 
